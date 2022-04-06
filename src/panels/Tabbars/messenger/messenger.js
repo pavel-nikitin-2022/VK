@@ -1,7 +1,7 @@
 import React from 'react';
 import socket from "../../../socket";
 import { useState, useEffect } from 'react';
-import { Gallery, List, Div, Avatar, View, FixedLayout, WriteBar, WriteBarIcon, PanelHeader, PanelHeaderContent, PanelHeaderBack, Spinner } from "@vkontakte/vkui";
+import { Progress, Gallery, List, Div, Avatar, View, FixedLayout, WriteBar, WriteBarIcon, PanelHeader, PanelHeaderContent, PanelHeaderBack, Spinner } from "@vkontakte/vkui";
 import "@vkontakte/vkui/dist/vkui.css";
 import './style.css';
 
@@ -15,29 +15,37 @@ function Messages(array) {
     )
 }
 
-function Galler(list) {
+function Galler({ list, uploader }) {
+    const [a, b] = useState(0)
+    if (a == list.length) {
+        document.getElementById("gal").style.opacity = 1
+    }
     return (
-        <Gallery align="center" slideWidth="custom" style={{ borderTop: "0.5px solid #b8b8bb", height: 150, borderRadius: 10, backgroundColor: "white", padding: "15px" }}>
-            {list.list.map((data, i) => {
-                return (
-                    <Card key={i} data={data} id={i} />
-                );
-            })}
-        </Gallery>
-    );
+        <div style={{borderTop: "0.5px solid #b8b8bb", height: 180, borderRadius: 10, backgroundColor: "white"}}>
+            {a != list.length && (<Progress style={{marginTop: 150}} value={a / list.length * 100}/>)}
+            <Gallery id="gal" align="center" slideWidth="custom" style={{ borderTop: "0.5px solid #b8b8bb", height: 150, borderRadius: 10, backgroundColor: "white", padding: "15px", opacity: 0 }}>
+                {list.map((data, i) => {
+                    return (
+                        <Card key={i} data={data} id={i} fn={b} count={a} />
+                    );
+                })}
+            </Gallery>
+        </div>
+    )
 }
 
 
-function Card(data, id) {
+function Card({ data, id, fn, count }) {
     const [load1, setLoad1] = useState(false)
     return (
-        <div style={{ position: "relative", height: "150px", marginLeft: "5px", backgroundColor: "red" }}>
-            {/*!load1 && <Spinner size="large"/>*/}
-            <img onLoad={() => { setLoad1(true) }} id={id} loading='lazy' src={data.data[1]} style={{ opacity: 1 }} height="100%" />
-            {load1 && <img onLoad={() => { document.getElementById(id).opacity = 0 }} loading='lazy' src={data.data[0].url} style={{ position: "absolute", top: 0, left: 0, bottom: 0, right: 0 }} height="100%" />}
+        <div style={{ position: "relative", height: "150px", marginLeft: "5px" }}>
+            <img className='prew' onLoad={(a) => { setLoad1(true); a.target.classList.add("load"); fn(count + 1); console.log(count) }} id={id} src={data[1]} style={{ opacity: 1 }} height="100%" />
+            {load1 && <img onLoad={() => { document.getElementById(id).opacity = 0; }} loading='lazy' src={data[0].url} style={{ position: "absolute", top: 0, left: 0, bottom: 0, right: 0 }} height="100%" />}
         </div>
     );
 }
+
+
 
 async function get(req, controller) {
     let answer = []
@@ -51,7 +59,7 @@ async function get(req, controller) {
         })
     }
     else {
-        await fetch("https://api.giphy.com/v1/gifs/search?api_key=FIT3iKsgACVpAQtlwWiZUMCPi5F71t2z&q=" + req, {
+        await fetch("https://api.giphy.com/v1/gifs/search?api_key=FIT3iKsgACVpAQtlwWiZUMCPi5F71t2z&limit=30&q=" + req, {
             signal: controller.signal
         }).then(response => response.json()).then(content => {
             content.data.forEach(element => {
@@ -68,8 +76,9 @@ function Messenger() {
     const [text, updateText] = useState("")
     const [height, updateHeight] = useState(0)
     const [controller, updateController] = useState(new AbortController())
+    const [loader, uploader] = useState(0)
     let req = ""
-
+    console.log(loader)
     useEffect(() => {
         let cleanupFunction = false;
         const fetchData = async () => {
@@ -107,7 +116,7 @@ function Messenger() {
                 <div id="mes1"><Messages array={messages} /></div>
 
                 <FixedLayout vertical="bottom">
-                    {videos.length > 0 && <Galler list={videos} />}
+                    {videos.length > 0 && <Galler list={videos} uploader={uploader} />}
                     <WriteBar
                         id="writebar"
                         style={{ borderTop: "0.5px solid #b8b8bb" }}
