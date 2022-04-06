@@ -1,0 +1,60 @@
+.Back, .Front{
+    position:absolute;
+    background-color: white;
+    overflow: hidden;
+    width: 90%;
+    border-radius: 10px;
+    -webkit-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+    -moz-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+    box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+    margin: 10px;
+    transition: ease-out 1s;
+    backface-visibility: hidden;
+}
+
+.Card.active .Front{
+    transform: rotateY(180deg);
+}
+.Card.active .Back{
+    transform: rotateY(0deg);
+}
+
+.Back{
+    transform: rotateY(-180deg);
+}
+
+.Card{
+    perspective: 1000px;
+    margin-bottom: 80px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.Div{
+    display: flex;
+    justify-content: left;
+}
+
+button{
+    background-color: transparent;
+    position: absolute;
+    border: none;
+}
+
+.Spinner{
+    margin-top: 30px;
+}
+
+.Placeholder{
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+}
+
+.Search{
+    right: 15px;
+}
