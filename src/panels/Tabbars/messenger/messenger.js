@@ -32,9 +32,8 @@ function Galler({ list, loader }) {
                 id="gal"
                 align="center"
                 slideWidth="custom"
-                showArrows
                 isDraggable
-                style={{ borderTop: "0.5px solid #b8b8bb", height: 150, borderRadius: 10, backgroundColor: "white", padding: "30px", opacity: 0 }}
+                style={{transition: "1s", borderTop: "0.5px solid #b8b8bb", height: 150, borderRadius: 10, backgroundColor: "white", padding: "30px", opacity: 0 }}
             >
                 {list.map((data, i) => {
                     return (
@@ -46,18 +45,15 @@ function Galler({ list, loader }) {
     )
 }
 
-
 function Card({ data, id, updateCount, count, stopShow }) {
     const [load1, setLoad1] = useState(false)
     return (
         <div id={id} className='Card1'>
-            <img onClick={()=>{console.log("A"); stopShow([]); socket.emit("send", data[0].url)}}  onLoad={() => { setLoad1(true); updateCount(count + 1) }} src={data[1]} style={{ opacity: 1, position: "relative", top: 15 }} height="90%" />
-            {load1 && <img onClick={()=>{console.log("A"); stopShow([]); socket.emit("send", data[0].url)}} onLoad={() => { document.getElementById(id).opacity = 0; }} loading='lazy' src={data[0].url} style={{ position: "absolute", top: 15, left: 0, bottom: 0, right: 0 }} height="90%" />}
+            <img onClick={()=>{ stopShow([]); socket.emit("send", data[0].url)}}  onLoad={() => { setLoad1(true); updateCount(count + 1) }} src={data[1]} style={{ opacity: 1, position: "relative", top: 15 }} height="90%" />
+            {load1 && <img onClick={()=>{document.getElementById("writebar").value = null; stopShow([]); socket.emit("send", data[0].url)}} onLoad={() => { document.getElementById(id).opacity = 0; }} loading='lazy' src={data[0].url} style={{ position: "absolute", top: 15, left: 0, bottom: 0, right: 0 }} height="90%" />}
         </div>
     );
 }
-
-
 
 async function get(req, controller) {
     let answer = []
