@@ -7,12 +7,14 @@ import {
     Snackbar,
     Spinner,
 } from "@vkontakte/vkui";
-import { Icon28LikeOutline, Icon28LikeFillRed } from '@vkontakte/icons';
+import { Icon28LikeOutline, Icon28LikeFillRed, Icon28CubeBoxOutline, Icon28BoxHeartOutline } from '@vkontakte/icons';
 import "@vkontakte/vkui/dist/vkui.css";
 import './main.css';
+import socket from '../../../socket';
 
 function GifCard({ data, id, fn }) {
     const [like, setActivelike] = useState(false)
+    const [arch, setArch] = useState(false)
     const [load, setActiveLoad] = useState(<Spinner className='Spinner' size="large" />)
     const [load_gif, set_load_gif] = useState(false)
 
@@ -29,13 +31,17 @@ function GifCard({ data, id, fn }) {
             <div className="Back">
                 {!load && <img src={data[0].url} onLoad={() => { set_load_gif(true) }} loading="lazy" width="100%"></img>}
                 <Div className='Div'>
-                    <button onClick={() => setActivelike(!like)}>
-                        {!like && <Icon28LikeOutline />}
-                        {like && <Icon28LikeFillRed />}
+                    <button onClick={() => {
+                        if (!arch) socket.emit("save", data);
+                        else socket.emit("delete", data);
+                        setArch(!arch)
+                    }}>
+                        {!arch && <Icon28CubeBoxOutline />}
+                        {arch && <Icon28BoxHeartOutline />}
                     </button>
                     <Button onClick={() => {
                         document.getElementById(id).classList.remove("active")
-                    }} size="s" style={{ marginLeft: "30px" }} mode="tertiary">Подробнее</Button>
+                    }} size="s" style={{ marginLeft: "30px" }} mode="tertiary">Назад</Button>
                 </Div>
             </div>
 
@@ -54,7 +60,7 @@ function GifCard({ data, id, fn }) {
                         else {
                             fn(<Snackbar onClose={() => fn(null)}>Загрузка идет</Snackbar>)
                         }
-                    }} size="s" style={{ marginLeft: "30px" }} mode="tertiary">Подробнее</Button>
+                    }} size="s" style={{ marginLeft: "30px" }} mode="tertiary">Посмотреть</Button>
                 </Div>
             </div>
         </div>

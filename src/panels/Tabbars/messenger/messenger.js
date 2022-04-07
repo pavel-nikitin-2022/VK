@@ -25,6 +25,7 @@ function Galler({ list, loader }) {
     return (
         <div style={{ borderTop: "0.5px solid #b8b8bb", height: 190, borderRadius: 10, backgroundColor: "white" }}>
             {a != list.length && (<Progress style={{ marginTop: 160 }} value={a / list.length * 100} />)}
+
             <Gallery onChange={(a) => {
                 if (document.querySelector(".choosen")) document.querySelector(".choosen").classList.remove("choosen")
                 document.getElementById(a).classList.add("choosen")
@@ -41,6 +42,7 @@ function Galler({ list, loader }) {
                     );
                 })}
             </Gallery>
+            
         </div>
     )
 }

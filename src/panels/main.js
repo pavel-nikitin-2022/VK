@@ -16,6 +16,7 @@ import {
 import "@vkontakte/vkui/dist/vkui.css";
 import MainPage from './Tabbars/main_page/main_page';
 import Messenger from './Tabbars/messenger/messenger';
+import Archive from './Tabbars/archive/archive';
 
 function Main() {
     const [simple, setSimple] = useState("main");
@@ -36,6 +37,7 @@ function Main() {
         }>
             <MainPage id="main" />
             <Messenger id="mes" />
+            <Archive id="archive"/>
         </Epic>
     );
 }
