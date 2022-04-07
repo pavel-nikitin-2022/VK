@@ -4,19 +4,20 @@ import { useState, useEffect } from 'react';
 import { Button, Progress, Gallery, List, Div, Avatar, View, FixedLayout, WriteBar, WriteBarIcon, PanelHeader, PanelHeaderContent, PanelHeaderBack, Spinner } from "@vkontakte/vkui";
 import "@vkontakte/vkui/dist/vkui.css";
 import './style.css';
-
+import { Icon20ShareExternalOutline } from '@vkontakte/icons';
 
 function Messages(array) {
     return (
         <List id="content">
             {array.array.map((value, key) => {
-                return (<Div className="message" key={key} style={{ padding: "7px", maxWidth: "70%" }}><span style={{ maxWidth: "100%", color: "white", backgroundColor: "#597ba0", borderRadius: "10px", padding: "10px" }}>{value}</span></Div>)
+               // return (<Div className="message" key={key} style={{ padding: "7px", maxWidth: "70%" }}><span style={{ maxWidth: "100%", color: "white", backgroundColor: "#597ba0", borderRadius: "10px", padding: "10px" }}>{value}</span></Div>)
+               return (<Div className="message" key={key} style={{ padding: "7px", maxWidth: "70%" }}><img src={value} width="100%"></img></Div>)
             })}
         </List>
     )
 }
 
-function Galler({ list }) {
+function Galler({ list, loader }) {
     const [a, b] = useState(0)
     if (a == list.length) {
         document.getElementById("gal").style.opacity = 1
@@ -28,10 +29,16 @@ function Galler({ list }) {
                 if (document.querySelector(".choosen")) document.querySelector(".choosen").classList.remove("choosen")
                 document.getElementById(a).classList.add("choosen")
             }}
-                id="gal" align="center" slideWidth="custom" style={{ borderTop: "0.5px solid #b8b8bb", height: 150, borderRadius: 10, backgroundColor: "white", padding: "30px", opacity: 0}}>
+                id="gal"
+                align="center"
+                slideWidth="custom"
+                showArrows
+                isDraggable
+                style={{ borderTop: "0.5px solid #b8b8bb", height: 150, borderRadius: 10, backgroundColor: "white", padding: "30px", opacity: 0 }}
+            >
                 {list.map((data, i) => {
                     return (
-                        <Card key={i} data={data} id={i} fn={b} count={a} />
+                        <Card key={i} data={data} id={i} updateCount={b} count={a} stopShow={loader} />
                     );
                 })}
             </Gallery>
@@ -40,12 +47,12 @@ function Galler({ list }) {
 }
 
 
-function Card({ data, id, fn, count }) {
+function Card({ data, id, updateCount, count, stopShow }) {
     const [load1, setLoad1] = useState(false)
     return (
         <div id={id} className='Card1'>
-            <img onLoad={() => { setLoad1(true); fn(count + 1) }} src={data[1]} style={{ opacity: 1, position: "relative", top: 15 }} height="90%" />
-            {load1 && <img onLoad={() => { document.getElementById(id).opacity = 0; }} loading='lazy' src={data[0].url} style={{ position: "absolute", top: 15, left: 0, bottom: 0, right: 0 }} height="90%" />}
+            <img onClick={()=>{console.log("A"); stopShow([]); socket.emit("send", data[0].url)}}  onLoad={() => { setLoad1(true); updateCount(count + 1) }} src={data[1]} style={{ opacity: 1, position: "relative", top: 15 }} height="90%" />
+            {load1 && <img onClick={()=>{console.log("A"); stopShow([]); socket.emit("send", data[0].url)}} onLoad={() => { document.getElementById(id).opacity = 0; }} loading='lazy' src={data[0].url} style={{ position: "absolute", top: 15, left: 0, bottom: 0, right: 0 }} height="90%" />}
         </div>
     );
 }
@@ -119,7 +126,7 @@ function Messenger() {
                 <div id="mes1"><Messages array={messages} /></div>
 
                 <FixedLayout vertical="bottom">
-                    {videos.length > 0 && <Galler list={videos} />}
+                    {videos.length > 0 && <Galler loader={loadVideos} list={videos} />}
                     <WriteBar
                         id="writebar"
                         style={{ borderTop: "0.5px solid #b8b8bb" }}

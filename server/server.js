@@ -13,9 +13,7 @@ app.get("/", (req, res) => {
 io.on("connection", (socket) => {
     console.log("here");
     socket.on("send", (text)=>{
-      console.log(text)
       messages.push(text)
-      console.log(messages)
       socket.emit("messages", messages)
     })
     socket.on("get", ()=>{
