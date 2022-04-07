@@ -51,10 +51,14 @@ io.on("connection", (socket) => {
   })
 
   socket.on("del", (data) => {
-    //console.log("HERE")
-    //socket.emit("archive", archive)
+    for (let i = 0; i < archive.length; i += 1) {
+      if (data[1] == archive[i][1]) {
+        archive.splice(i, 1)
+        socket.emit("archive", archive)
+      }
+    }
   })
-
+  
 });
 
 server.listen(3000, () => {

@@ -29,7 +29,7 @@ function GifCard({ data, id, fn }) {
             <div className="Back">
                 {!load && <img src={data[0].url} onLoad={() => { set_load_gif(true) }} loading="lazy" width="100%"></img>}
                 <Div className='Div'>
-                    <button onClick={() => {}}>
+                    <button onClick={() => {socket.emit("del", data)}}>
                         <Icon28DeleteOutline/>
                     </button>
                     <Button onClick={() => {
@@ -60,9 +60,11 @@ function GifList({ list, fn }) {
     return (
         <List width="100%">
             {list.map((data, i) => {
-                return (
-                    <GifCard key={i} data={data} id={i} fn={fn} />
-                );
+                if (data){
+                    return (
+                        <GifCard key={i} data={data} id={i} fn={fn} />
+                    );
+                }
             })}
         </List>
     );
