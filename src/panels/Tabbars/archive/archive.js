@@ -16,10 +16,10 @@ import {
 
 import socket from '../../../socket';
 import "@vkontakte/vkui/dist/vkui.css";
-import GifList from "../main_page/fn_main";
+import GifList from "./fn_archive";
 import '../main_page/main.css';
 
-function Archive({ fn, req }) {
+function Archive({ fn }) {
     const [gifs, setUpdateGifs] = useState([])
     const [loader, setActiveLoader] = useState(<Spinner className='Spinner' size="large" />)
     const [warning, setActiveWarning] = useState(null)
@@ -72,7 +72,7 @@ function Archive({ fn, req }) {
                         </React.Fragment>
                     }
                 >
-                    Гифки
+                    Архив
                 </PanelHeader>
                 {content}
                 {warning}
