@@ -2,3 +2,15 @@
     height: calc(100vh - 105px);
     overflow: auto;
 }
+
+.Card1{
+    position: relative;
+    height: 150px;
+    margin-left: 20px;
+    transition: 0.3s linear;
+    height: 100%;
+}
+
+.Card1.choosen{
+    transform: translateY(-15px);
+}
