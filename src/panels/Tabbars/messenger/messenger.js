@@ -10,8 +10,8 @@ function Messages(array) {
     return (
         <List id="content">
             {array.array.map((value, key) => {
-               // return (<Div className="message" key={key} style={{ padding: "7px", maxWidth: "70%" }}><span style={{ maxWidth: "100%", color: "white", backgroundColor: "#597ba0", borderRadius: "10px", padding: "10px" }}>{value}</span></Div>)
-               return (<Div className="message" key={key} style={{ padding: "7px", maxWidth: "70%" }}><img src={value} width="100%"></img></Div>)
+               if (value[1] == "t") return (<Div className="message" key={key} style={{ padding: "7px", maxWidth: "70%" }}><span style={{ maxWidth: "100%", color: "white", backgroundColor: "#597ba0", borderRadius: "10px", padding: "10px" }}>{value[0]}</span></Div>)
+               if (value[1] == "g") return (<Div className="message" key={key} style={{ padding: "7px", maxWidth: "70%" }}><img src={value[0]} width="100%"></img></Div>)
             })}
         </List>
     )
@@ -49,8 +49,8 @@ function Card({ data, id, updateCount, count, stopShow }) {
     const [load1, setLoad1] = useState(false)
     return (
         <div id={id} className='Card1'>
-            <img onClick={()=>{ stopShow([]); socket.emit("send", data[0].url)}}  onLoad={() => { setLoad1(true); updateCount(count + 1) }} src={data[1]} style={{ opacity: 1, position: "relative", top: 15 }} height="90%" />
-            {load1 && <img onClick={()=>{document.getElementById("writebar").value = null; stopShow([]); socket.emit("send", data[0].url)}} onLoad={() => { document.getElementById(id).opacity = 0; }} loading='lazy' src={data[0].url} style={{ position: "absolute", top: 15, left: 0, bottom: 0, right: 0 }} height="90%" />}
+            <img onClick={()=>{ stopShow([]); socket.emit("send", [data[0].url, "g"])}}  onLoad={() => { setLoad1(true); updateCount(count + 1) }} src={data[1]} style={{ opacity: 1, position: "relative", top: 15 }} height="90%" />
+            {load1 && <img onClick={()=>{document.getElementById("writebar").value = null; stopShow([]); socket.emit("send", [data[0].url, "g"])}} onLoad={() => { document.getElementById(id).opacity = 0; }} loading='lazy' src={data[0].url} style={{ position: "absolute", top: 15, left: 0, bottom: 0, right: 0 }} height="90%" />}
         </div>
     );
 }
@@ -134,7 +134,7 @@ function Messenger() {
                                 loadVideos([])
                                 document.getElementById("writebar").value = null;
                                 document.getElementById("writebar").style.height = height + "px"
-                                socket.emit("send", text);
+                                socket.emit("send", [text, "t"]);
                             }
                         }} />}
                         onChange={async (e) => {
