@@ -32,9 +32,22 @@ function GifCard({ data, id, fn }) {
                 {!load && <img src={data[0].url} onLoad={() => { set_load_gif(true) }} loading="lazy" width="100%"></img>}
                 <Div className='Div'>
                     <button onClick={() => {
-                        if (!arch) socket.emit("save", data);
-                        else socket.emit("delete", data);
-                        setArch(!arch)
+                        if (!arch){
+                            socket.emit("save", data);
+                       /*     socket.on("add", (answer)=>{
+                                if (answer){
+                                    fn(<Snackbar onClose={() => fn(null)}>Добавлен в архив</Snackbar>)
+                                    setArch(!arch)
+                                } 
+                                else{
+                                    fn(<Snackbar onClose={() => fn(null)}>Уже существует</Snackbar>)
+                                } 
+                            })*/
+                        } 
+                        else{
+                            socket.emit("delete", data);
+                            setArch(!arch)
+                        } 
                     }}>
                         {!arch && <Icon28CubeBoxOutline />}
                         {arch && <Icon28BoxHeartOutline />}

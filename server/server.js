@@ -7,10 +7,10 @@ const io = new Server(server, { cors: { origin: "*" } })
 let messages = []
 let archive = []
 
-function check(array, i){
+function check(array, i) {
   let res = true
   array.forEach(element => {
-    if (element[1] == i[1]){
+    if (element[1] == i[1]) {
       console.log("A")
       res = false
     }
@@ -24,27 +24,36 @@ app.get("/", (req, res) => {
 });
 
 io.on("connection", (socket) => {
-    console.log("here");
-    socket.on("send", (text)=>{
-      messages.push(text)
-      socket.emit("messages", messages)
-    })
-    socket.on("get", ()=>{
-      socket.emit("messages", messages)
-    })
-    socket.on("save", (data)=>{
-      if (check(archive, data) == true){
-        archive.push(data)
-      } 
+  console.log("here");
+
+  socket.on("send", (text) => {
+    messages.push(text)
+    socket.emit("messages", messages)
+  })
+
+  socket.on("get", () => {
+    socket.emit("messages", messages)
+  })
+
+  socket.on("save", (data) => {
+    if (check(archive, data) == true) {
+      archive.push(data)
       socket.emit("archive", archive)
-    })
-    socket.on("get_archive", ()=>{
-      socket.emit("archive", archive)
-    })
-    socket.on("del", (data)=>{
-      //console.log("HERE")
-      //socket.emit("archive", archive)
-    })
+      socket.emit("add", true)
+    }
+    else {
+      socket.emit("add", false)
+    }
+  })
+
+  socket.on("get_archive", () => {
+    socket.emit("archive", archive)
+  })
+
+  socket.on("del", (data) => {
+    //console.log("HERE")
+    //socket.emit("archive", archive)
+  })
 
 });
 
