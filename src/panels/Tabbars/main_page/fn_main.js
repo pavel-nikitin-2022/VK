@@ -34,20 +34,11 @@ function GifCard({ data, id, fn }) {
                     <button onClick={() => {
                         if (!arch){
                             socket.emit("save", data);
-                       /*     socket.on("add", (answer)=>{
-                                if (answer){
-                                    fn(<Snackbar onClose={() => fn(null)}>Добавлен в архив</Snackbar>)
-                                    setArch(!arch)
-                                } 
-                                else{
-                                    fn(<Snackbar onClose={() => fn(null)}>Уже существует</Snackbar>)
-                                } 
-                            })*/
                         } 
                         else{
                             socket.emit("delete", data);
-                            setArch(!arch)
-                        } 
+                        }
+                        setArch(!arch)
                     }}>
                         {!arch && <Icon28CubeBoxOutline />}
                         {arch && <Icon28BoxHeartOutline />}

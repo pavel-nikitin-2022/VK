@@ -35,6 +35,7 @@ function Video({ fn, req }) {
         let cleanupFunction = false;
         const fetchData = async () => {
             try {
+                console.log("God help me")
                 fetch("https://api.giphy.com/v1/gifs/search?api_key=FIT3iKsgACVpAQtlwWiZUMCPi5F71t2z&q=" + req).then(response => response.json()).then(content => {
                     content.data.forEach(element => {
                         gifs.push([element.images.downsized, element.images.downsized_still.url]);
@@ -47,10 +48,10 @@ function Video({ fn, req }) {
                 socket.on("add", (answer) => {
                     if (!cleanupFunction) {
                         if (answer) {
-                            setActiveWarning(<Snackbar onClose={() => fn(null)}>Добавлен в архив</Snackbar>)
+                            setActiveWarning(<Snackbar onClose={() => setActiveWarning(null)}>Добавлен в архив</Snackbar>)
                         }
                         else {
-                            setActiveWarning(<Snackbar onClose={() => fn(null)}>Уже существует</Snackbar>)
+                            setActiveWarning(<Snackbar onClose={() => setActiveWarning(null)}>Уже существует</Snackbar>)
                         }
                     }
                 })
