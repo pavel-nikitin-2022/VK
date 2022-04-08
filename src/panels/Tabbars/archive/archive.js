@@ -57,20 +57,6 @@ function Archive({ fn }) {
             <Panel id="archive">
                 <PanelHeader
                     left={<Icon36LogoVk />}
-                    right={
-                        <React.Fragment>
-                            <PanelHeaderButton
-                                aria-label="Поиск"
-                                onClick={() => fn("search")}
-                            >
-                                <Icon28SearchOutline />
-                            </PanelHeaderButton>
-
-                            <PanelHeaderButton aria-label="Настройки">
-                                <Icon28SettingsOutline />
-                            </PanelHeaderButton>
-                        </React.Fragment>
-                    }
                 >
                     Архив
                 </PanelHeader>

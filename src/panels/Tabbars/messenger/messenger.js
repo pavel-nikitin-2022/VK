@@ -18,6 +18,7 @@ function Messages(array) {
 }
 
 function Galler({ list, loader }) {
+    useEffect(()=>{document.getElementById(0).classList.add("choosen")}, [])
     const [a, b] = useState(0)
     if (a == list.length) {
         document.getElementById("gal").style.opacity = 1
@@ -80,7 +81,7 @@ async function get(req, controller) {
     return answer
 }
 
-function Messenger({setActiveModal}) {
+function Messenger({setActiveModal, setSimple}) {
     const [messages, updateMessage] = useState([])
     const [videos, loadVideos] = useState([])
     const [text, updateText] = useState("")
@@ -111,7 +112,7 @@ function Messenger({setActiveModal}) {
         <View activePanel='mes' >
             <div className='panel' id="mes">
                 <PanelHeader
-                    left={<PanelHeaderBack label="Назад" />}
+                    left={<PanelHeaderBack onClick={()=>{setSimple("main")}} label="Назад" />}
                 >
                     <PanelHeaderContent
                         status="был в сети сегодня, в 18:46"

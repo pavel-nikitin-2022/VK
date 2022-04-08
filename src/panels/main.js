@@ -36,7 +36,7 @@ function Main({setActiveModal}) {
             </Tabbar>
         }>
             <MainPage id="main" />
-            <Messenger id="mes" setActiveModal={setActiveModal} />
+            <Messenger id="mes" setActiveModal={setActiveModal} setSimple={setSimple}/>
             <Archive id="archive"/>
         </Epic>
     );
