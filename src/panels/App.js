@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   AdaptivityProvider,
   WebviewType,
@@ -16,11 +16,21 @@ import {
 } from "@vkontakte/vkui";
 import "@vkontakte/vkui/dist/vkui.css";
 import Main from "./main"
-import Start from "./preview"
+import Gifs from "../modals/gifs"
 import { useState } from 'react';
+import socket from '../socket';
 
 function App() {
   const [activeModal, setActiveModal] = useState(null)
+  const [gifs, updateGifs] = useState([])
+  
+  useEffect(()=>{
+    socket.emit("get_archive")
+    socket.on("archive", (res)=>{
+      updateGifs(res)
+    });
+  }, [])
+
   const modal = (
     <ModalRoot 
       activeModal={activeModal} 
@@ -28,24 +38,7 @@ function App() {
         setActiveModal(null);
       }}>
 
-      <ModalPage
-        id="photo"
-        header={
-          <ModalPageHeader>
-            Dynamic modal
-          </ModalPageHeader>
-        }
-        dynamicContentHeight
-      >
-      
-        <Group>
-          <div>edw</div>
-          <div>edw</div>
-          <div>edw</div>
-          <div>edw</div>
-          <div>edw</div>
-        </Group>
-      </ModalPage>
+      <Gifs id="photo" list={gifs} setActiveModal={setActiveModal}/>
     </ModalRoot>
   )
 
@@ -55,7 +48,7 @@ function App() {
         <AppRoot>
           <SplitLayout modal={modal}>
             <SplitCol>
-                <Main id="main" />
+                <Main id="main" setActiveModal={setActiveModal} />
             </SplitCol>
           </SplitLayout>
         </AppRoot>

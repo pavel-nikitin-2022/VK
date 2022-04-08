@@ -80,7 +80,7 @@ async function get(req, controller) {
     return answer
 }
 
-function Messenger() {
+function Messenger({setActiveModal}) {
     const [messages, updateMessage] = useState([])
     const [videos, loadVideos] = useState([])
     const [text, updateText] = useState("")
@@ -129,7 +129,7 @@ function Messenger() {
                         id="writebar"
                         style={{ borderTop: "0.5px solid #b8b8bb" }}
                         placeholder="Сообщение"
-                        before={<WriteBarIcon mode="attach" />}
+                        before={<WriteBarIcon onClick={()=>{setActiveModal("photo"); console.log("Lala")}} mode="attach" />}
                         after={<WriteBarIcon mode="done" onClick={() => {
                             if (text.length > 0) {
                                 updateText("")

@@ -18,7 +18,7 @@ import MainPage from './Tabbars/main_page/main_page';
 import Messenger from './Tabbars/messenger/messenger';
 import Archive from './Tabbars/archive/archive';
 
-function Main() {
+function Main({setActiveModal}) {
     const [simple, setSimple] = useState("main");
     
     return (
@@ -36,7 +36,7 @@ function Main() {
             </Tabbar>
         }>
             <MainPage id="main" />
-            <Messenger id="mes" />
+            <Messenger id="mes" setActiveModal={setActiveModal} />
             <Archive id="archive"/>
         </Epic>
     );
