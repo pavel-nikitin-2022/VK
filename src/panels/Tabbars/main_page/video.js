@@ -35,8 +35,8 @@ function Video({ fn, req }) {
         let cleanupFunction = false;
         const fetchData = async () => {
             try {
-                console.log("God help me")
-                fetch("https://api.giphy.com/v1/gifs/search?api_key=FIT3iKsgACVpAQtlwWiZUMCPi5F71t2z&q=" + req).then(response => response.json()).then(content => {
+                if (req == "") {
+                    fetch("https://api.giphy.com/v1/stickers/trending?api_key=FIT3iKsgACVpAQtlwWiZUMCPi5F71t2z").then(response => response.json()).then(content => {
                     content.data.forEach(element => {
                         gifs.push([element.images.downsized, element.images.downsized_still.url]);
                     });
@@ -45,6 +45,20 @@ function Video({ fn, req }) {
                         setActiveLoader(null);
                     }
                 })
+                }
+                else {
+                    fetch("https://api.giphy.com/v1/gifs/search?api_key=FIT3iKsgACVpAQtlwWiZUMCPi5F71t2z&q=" + req).then(response => response.json()).then(content => {
+                        content.data.forEach(element => {
+                            gifs.push([element.images.downsized, element.images.downsized_still.url]);
+                        });
+                        setUpdateGifs(gifs);
+                        if (gifs.length > 0) {
+                            setActiveLoader(null);
+                        }
+                    })
+                }
+
+                
                 socket.on("add", (answer) => {
                     if (!cleanupFunction) {
                         if (answer) {

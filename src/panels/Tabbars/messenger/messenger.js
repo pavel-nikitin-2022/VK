@@ -1,10 +1,9 @@
 import React from 'react';
 import socket from "../../../socket";
 import { useState, useEffect } from 'react';
-import { Button, Progress, Gallery, List, Div, Avatar, View, FixedLayout, WriteBar, WriteBarIcon, PanelHeader, PanelHeaderContent, PanelHeaderBack, Spinner } from "@vkontakte/vkui";
+import { Progress, Gallery, List, Div, Avatar, View, FixedLayout, WriteBar, WriteBarIcon, PanelHeader, PanelHeaderContent, PanelHeaderBack, Spinner } from "@vkontakte/vkui";
 import "@vkontakte/vkui/dist/vkui.css";
 import './style.css';
-import { Icon20ShareExternalOutline } from '@vkontakte/icons';
 
 function Messages(array) {
     return (
@@ -26,7 +25,7 @@ function Galler({ list, loader }) {
     return (
         <div style={{ borderTop: "0.5px solid #b8b8bb", height: 190, borderRadius: 10, backgroundColor: "white" }}>
             {a != list.length && (<Progress style={{ marginTop: 160 }} value={a / list.length * 100} />)}
-
+            {a != list.length && (<Spinner style={{ marginTop: -180 }} size="medium" />)}
             <Gallery onChange={(a) => {
                 if (document.querySelector(".choosen")) document.querySelector(".choosen").classList.remove("choosen")
                 document.getElementById(a).classList.add("choosen")
@@ -61,7 +60,7 @@ function Card({ data, id, updateCount, count, stopShow }) {
 async function get(req, controller) {
     let answer = []
     if (req == "") {
-        await fetch("https://api.giphy.com/v1/gifs/search?api_key=FIT3iKsgACVpAQtlwWiZUMCPi5F71t2z&q=mama", {
+        await fetch("https://api.giphy.com/v1/stickers/trending?api_key=FIT3iKsgACVpAQtlwWiZUMCPi5F71t2z&limit=30", {
             signal: controller.signal
         }).then(response => response.json()).then(content => {
             content.data.forEach(element => {
@@ -130,7 +129,7 @@ function Messenger({setActiveModal, setSimple}) {
                         id="writebar"
                         style={{ borderTop: "0.5px solid #b8b8bb" }}
                         placeholder="Сообщение"
-                        before={<WriteBarIcon onClick={()=>{setActiveModal("photo"); console.log("Lala")}} mode="attach" />}
+                        before={<WriteBarIcon onClick={()=>{setActiveModal("photo")}} mode="attach" />}
                         after={<WriteBarIcon mode="done" onClick={() => {
                             if (text.length > 0) {
                                 updateText("")
@@ -152,7 +151,6 @@ function Messenger({setActiveModal, setSimple}) {
                             if (e.target.value.slice(0, 4) == "/gif") {
                                 try {
                                     req = e.target.value.slice(4, e.target.value.length).trim()
-                                    console.log(req + " IMPORTANT")
                                     loadVideos([])
                                     await get(req, contr).then((response) => { loadVideos(response); })
                                 } catch (err) {

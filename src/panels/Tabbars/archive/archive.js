@@ -5,13 +5,10 @@ import {
     Panel,
     Spinner,
     PanelHeader,
-    PanelHeaderButton,
 } from "@vkontakte/vkui";
 
 import {
     Icon36LogoVk,
-    Icon28SettingsOutline,
-    Icon28SearchOutline,
 } from '@vkontakte/icons';
 
 import socket from '../../../socket';
@@ -19,7 +16,7 @@ import "@vkontakte/vkui/dist/vkui.css";
 import GifList from "./fn_archive";
 import '../main_page/main.css';
 
-function Archive({ fn }) {
+function Archive() {
     const [gifs, setUpdateGifs] = useState([])
     const [loader, setActiveLoader] = useState(<Spinner className='Spinner' size="large" />)
     const [warning, setActiveWarning] = useState(null)
@@ -31,7 +28,6 @@ function Archive({ fn }) {
                 socket.emit("get_archive");
                 socket.on("archive", (res) => {
                     if (!cleanupFunction) {
-                        console.log(res)
                         setUpdateGifs(res);
                         setActiveLoader(null);
                     }

@@ -41,7 +41,7 @@ function Searcher({ fn, fn2 }) {
                 <Search onChange={(e)=>{setChangeValue(e.target.value)}} placeholder="/gif + что ты ищешь" after={null} />
             </PanelHeader>
             <Placeholder className='Placeholder' icon={<Icon56SearchOutline />}>
-                Ваша история запросов пуста<br />Бегом искать!!!
+                Найди свою любимую картинку ;)
             </Placeholder>
         </Panel>
     );

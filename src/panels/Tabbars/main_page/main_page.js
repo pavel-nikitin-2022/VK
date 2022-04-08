@@ -8,7 +8,7 @@ import "@vkontakte/vkui/dist/vkui.css";
 
 function MainPage() {
     const [panel, setActivePanel] = useState("video")
-    const [req, setChangereq] = useState("mama")
+    const [req, setChangereq] = useState("")
     return (
         <View activePanel={panel}>
             <Video id="video" fn={setActivePanel} req={req}/>
