@@ -11,7 +11,7 @@ function Messages(array) {
         <List id="content">
             {array.array.map((value, key) => {
                if (value[1] == "t") return (<Div className="message" key={key} style={{ padding: "7px", maxWidth: "70%" }}><span style={{ maxWidth: "100%", color: "white", backgroundColor: "#597ba0", borderRadius: "10px", padding: "10px" }}>{value[0]}</span></Div>)
-               if (value[1] == "g") return (<Div className="message" key={key} style={{ padding: "7px", maxWidth: "70%" }}><img src={value[0]} width="100%"></img></Div>)
+               if (value[1] == "g") return (<Div className="message" key={key} style={{ padding: "7px", maxWidth: "70%" }}><img onLoad={()=>{document.getElementById("mes").scrollTop = document.getElementById("mes").scrollHeight}} src={value[0]} width="100%"></img></Div>)
             })}
         </List>
     )
